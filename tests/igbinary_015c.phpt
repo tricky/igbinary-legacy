@@ -51,7 +51,7 @@ function gc($time) {
 
 ini_set('session.serialize_handler', 'igbinary');
 
-session_set_save_handler('open', 'close', 'read', 'write', 'destroy', 'gc');
+@session_set_save_handler('open', 'close', 'read', 'write', 'destroy', 'gc');
 session_id('abcdef10231512dfaz_12311');
 
 session_start();

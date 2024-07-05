@@ -64,7 +64,7 @@ class Bar {
 ini_set('session.serialize_handler', 'igbinary');
 
 $handler = new S();
-session_set_save_handler($handler, true);
+@session_set_save_handler($handler, true);
 
 $db_object = new Foo();
 $session_object = new Bar();

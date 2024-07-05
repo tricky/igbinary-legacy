@@ -23,7 +23,7 @@ class MessageEvents
         $this->transports[$event->getTransport()] = true;
     }
 
-    public function getEvents(string $name = null): array
+    public function getEvents(?string $name = null): array
     {
         return $this->events;
     }
@@ -229,7 +229,7 @@ final class Headers
         return array_shift($values);
     }
 
-    public function all(string $name = null): iterable
+    public function all(?string $name = null): iterable
     {
         if (null === $name) {
             foreach ($this->headers as $name => $collection) {
@@ -305,7 +305,7 @@ class RawMessage
 class Message extends RawMessage
 {
 
-    public function __construct(Headers $headers = null, AbstractPart $body = null)
+    public function __construct(?Headers $headers = null, ?AbstractPart $body = null)
     {
         $this->headers = $headers ? clone $headers : new Headers();
         $this->body = $body;
