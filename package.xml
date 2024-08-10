@@ -34,7 +34,7 @@ memcached or similar memory based storages for serialized data.</description>
  <date>2024-08-10</date>
  <time>16:00:00</time>
  <version>
-  <release>3.2.16</release>
+  <release>3.2.17dev</release>
   <api>1.4.0</api>
  </version>
  <stability>
@@ -241,6 +241,22 @@ memcached or similar memory based storages for serialized data.</description>
  <providesextension>igbinary</providesextension>
  <extsrcrelease />
  <changelog>
+  <release>
+   <date>2024-08-10</date>
+   <time>16:00:00</time>
+   <version>
+    <release>3.2.16</release>
+    <api>1.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <license uri="https://github.com/igbinary/igbinary/blob/master/COPYING">BSD-3-Clause</license>
+   <notes>
+* Fix test failures in php 8.4.0alpha1 due to tests calling deprecated functions (#390)
+   </notes>
+  </release>
   <release>
    <date>2023-12-02</date>
    <time>16:00:00</time>
