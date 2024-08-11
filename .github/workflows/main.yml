@@ -75,3 +75,49 @@ jobs:
         run: if [[ ${{ matrix.PHP_VERSION }} != '7.0' ]]; then bash ci/test_dockerized_valgrind.sh ${{ matrix.PHP_VERSION }} ${{ matrix.PHP_VERSION_FULL }} ${{ matrix.DOCKER_ARCHITECTURE }}; fi
       # NOTE: tests report false positives for zend_string_equals in php 7.3+
       # due to the use of inline assembly in php-src. (not related to igbinary)
+  windows:
+    defaults:
+      run:
+        shell: cmd
+    strategy:
+      fail-fast: false
+      matrix:
+          version:
+          # 7.2 and 7.3 currently fail due to https://github.com/php/setup-php-sdk/issues/10
+          # - { os: windows-2019, php: "7.2" }
+          # - { os: windows-2019, php: "7.3" }
+          - { os: windows-2019, php: "7.4" }
+          - { os: windows-2022, php: "8.0" }
+          - { os: windows-2022, php: "8.1" }
+          - { os: windows-2022, php: "8.2" }
+          - { os: windows-2022, php: "8.3" }
+          - { os: windows-2022, php: "8.4" }
+          arch: [x64]
+          ts: [nts, ts]
+    # https://github.com/php/setup-php-sdk?tab=readme-ov-file#inputs
+    runs-on: ${{matrix.version.os}}
+    steps:
+      - name: Checkout igbinary
+        uses: actions/checkout@v2
+      - name: Setup PHP
+        id: setup-php
+        uses: php/setup-php-sdk@v0.9
+        with:
+          version: ${{matrix.version.php}}
+          arch: ${{matrix.arch}}
+          ts: ${{matrix.ts}}
+      - name: Enable Developer Command Prompt
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: ${{matrix.arch}}
+          toolset: ${{steps.setup-php.outputs.toolset}}
+      - name: phpize
+        run: phpize
+      - name: configure
+        run: configure --enable-igbinary --enable-debug-pack --with-prefix=${{steps.setup-php.outputs.prefix}}
+      - name: make
+        run: nmake
+      # Run tests, failing if they fail. REPORT_EXIT_STATUS=1 is the default for tests in php 7.2+
+      - name: test
+        run: nmake test TESTS="--show-diff tests"
+      # Don't build DLLs for development commits or PRs.
