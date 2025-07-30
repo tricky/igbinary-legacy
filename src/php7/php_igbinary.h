@@ -32,7 +32,11 @@ ZEND_END_MODULE_GLOBALS(igbinary)
 #include "TSRM.h"
 #endif
 
+#if PHP_VERSION_ID < 70200
 #include "ext/standard/php_smart_string.h"
+#else
+#include "Zend/zend_smart_string.h"
+#endif
 
 /** Module init function. */
 PHP_MINIT_FUNCTION(igbinary);
