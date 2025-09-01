@@ -1,7 +1,5 @@
 --TEST--
 Cyclic array test 2
---INI--
-report_memleaks=0
 --SKIPIF--
 <?php
 if (!extension_loaded('igbinary')) {

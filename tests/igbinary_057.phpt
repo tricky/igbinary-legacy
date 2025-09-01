@@ -6,7 +6,7 @@ Test serializing more strings than the capacity of the initial strings table.
 function main() {
 	$array = array();
 	for ($i = 0; $i < 2; $i++) {
-		for ($c = 'a'; $c < 'z'; $c++) {
+		for ($c = 'a'; $c < 'z'; $c = chr(ord($c)+1)) {
 			$array[] = $c;
 		}
 	}
