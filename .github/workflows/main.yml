@@ -85,10 +85,10 @@ jobs:
       fail-fast: false
       matrix:
           version:
-          # 7.2 and 7.3 currently fail due to https://github.com/php/setup-php-sdk/issues/10
-          # - { os: windows-2019, php: "7.2" }
-          # - { os: windows-2019, php: "7.3" }
-          - { os: windows-2019, php: "7.4" }
+          # windows 2019 action runner is deprecated https://github.com/actions/runner-images/issues/12045
+          - { os: windows-2022, php: "7.2" }
+          - { os: windows-2022, php: "7.3" }
+          - { os: windows-2022, php: "7.4" }
           - { os: windows-2022, php: "8.0" }
           - { os: windows-2022, php: "8.1" }
           - { os: windows-2022, php: "8.2" }
@@ -102,6 +102,15 @@ jobs:
     steps:
       - name: Checkout igbinary
         uses: actions/checkout@v2
+      - name: Install VC15 component
+        if: ${{ matrix.version.php == '7.4' || matrix.version.php == '7.3' || matrix.version.php == '7.2' }}
+        shell: pwsh
+        run: |
+                Set-Location "C:\Program Files (x86)\Microsoft Visual Studio\Installer\"
+                $installPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
+                $component = "Microsoft.VisualStudio.Component.VC.v141.x86.x64"
+                $args = ('/c', "vs_installer.exe", 'modify', '--installPath', "`"$installPath`"", '--add', $component, '--quiet', '--norestart', '--nocache')
+                $process = Start-Process -FilePath cmd.exe -ArgumentList $args -Wait -PassThru -WindowStyle Hidden
       - name: Setup PHP
         id: setup-php
         uses: php/setup-php-sdk@v0.11
