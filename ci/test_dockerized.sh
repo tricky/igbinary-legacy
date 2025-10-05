@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-if [[ $# < 1 || $# > 2 ]]; then
-    echo "Usage: $0 PHP_VERSION [i386]" 1>&2
-    echo "e.g. $0 8.0 php" 1>&2
+if [[ $# < 1 || $# > 3 ]]; then
+    echo "Usage: $0 PHP_VERSION PHP_VERSION_FULL [i386]" 1>&2
+    echo "e.g. $0 8.0 8.0.10 i386" 1>&2
     echo "The PHP_VERSION is the version of the php docker image to use" 1>&2
     exit 1
 fi
@@ -10,21 +10,21 @@ fi
 # -u fail for undefined variables
 set -xeu
 PHP_VERSION=$1
-PHP_FULL_VERSION=${2:-$PHP_VERSION}
+PHP_VERSION_FULL=${2:-$PHP_VERSION}
 ARCHITECTURE=${3:-}
 
 # Determine if we have a pre-release version, and if so, use the full version
 # instead of the short version. Docker hub only has short tags for stable
 # releases.
-case "$PHP_FULL_VERSION" in
+case "$PHP_VERSION_FULL" in
     *RC[0-9]*)
-        PHP_VERSION="${PHP_FULL_VERSION}"
+        PHP_VERSION="${PHP_VERSION_FULL}"
         ;;
     *alpha[0-9]*)
-        PHP_VERSION="${PHP_FULL_VERSION}"
+        PHP_VERSION="${PHP_VERSION_FULL}"
         ;;
     *beta[0-9]*)
-        PHP_VERSION="${PHP_FULL_VERSION}"
+        PHP_VERSION="${PHP_VERSION_FULL}"
         ;;
     *)
         # Use only the major.minor version for stable releases.
