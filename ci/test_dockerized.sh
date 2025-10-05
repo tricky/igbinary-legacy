@@ -10,7 +10,27 @@ fi
 # -u fail for undefined variables
 set -xeu
 PHP_VERSION=$1
-ARCHITECTURE=${2:-}
+PHP_FULL_VERSION=${2:-$PHP_VERSION}
+ARCHITECTURE=${3:-}
+
+# Determine if we have a pre-release version, and if so, use the full version
+# instead of the short version. Docker hub only has short tags for stable
+# releases.
+case "$PHP_FULL_VERSION" in
+    *RC[0-9]*)
+        PHP_VERSION="${PHP_FULL_VERSION}"
+        ;;
+    *alpha[0-9]*)
+        PHP_VERSION="${PHP_FULL_VERSION}"
+        ;;
+    *beta[0-9]*)
+        PHP_VERSION="${PHP_FULL_VERSION}"
+        ;;
+    *)
+        # Use only the major.minor version for stable releases.
+        # As provided in PHP_VERSION
+        ;;
+esac
 
 if [[ "$ARCHITECTURE" == i386 ]]; then
 	PHP_IMAGE="$ARCHITECTURE/php"

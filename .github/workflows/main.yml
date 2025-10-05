@@ -64,7 +64,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Build and test in docker
-        run: bash ci/test_dockerized.sh ${{ matrix.PHP_VERSION }} ${{ matrix.DOCKER_ARCHITECTURE }}
+        run: bash ci/test_dockerized.sh ${{ matrix.PHP_VERSION }} ${{ matrix.PHP_VERSION_FULL }} ${{ matrix.DOCKER_ARCHITECTURE }}
 
       # We reuse the php base image because
       # 1. It has any necessary dependencies installed for php 7.0-8.2

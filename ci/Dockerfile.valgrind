@@ -2,6 +2,9 @@ ARG PHP_IMAGE
 ARG PHP_VERSION
 FROM $PHP_IMAGE:$PHP_VERSION
 WORKDIR /code
+
+ADD ci/adjust-debian-apt-sources.sh ci/
+RUN ci/adjust-debian-apt-sources.sh
 RUN apt-get update && apt-get install -y valgrind && apt-get clean
 RUN apt-get install -y libcurl4-openssl-dev
 
