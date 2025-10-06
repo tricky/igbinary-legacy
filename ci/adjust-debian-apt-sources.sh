@@ -5,8 +5,8 @@
 
 . /etc/os-release
 
-if [ "x${ID:-linux}" = "xdebian" ] && { [ "x${VERSION_CODENAME:-unknown}" = "xbuster" ] || [ "x${VERSION_CODENAME:-unknown}" = "xstretch" ]; } ; then
-    echo "Adjusting APT sources for Debian Buster or Stretch"
+if [ "x${ID:-linux}" = "xdebian" ] && { [ "x${VERSION_ID:-0}" = "x9" ] || [ "x${VERSION_ID:-0}" = "x10" ]; } ; then
+    echo "Adjusting APT sources for Debian Stretch or Buster"
     sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list
     sed -i 's|http://security.debian.org/debian-security|http://archive.debian.org/debian-security|g' /etc/apt/sources.list
     echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until
