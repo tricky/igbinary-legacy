@@ -9,13 +9,13 @@ if [ "x${ID:-linux}" = "xdebian" ] && { [ "x${VERSION_ID:-0}" = "x9" ] || [ "x${
     echo "Adjusting APT sources for Debian Stretch or Buster"
     sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list
     sed -i 's|http://security.debian.org/debian-security|http://archive.debian.org/debian-security|g' /etc/apt/sources.list
-    echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until
-    echo 'Acquire::AllowInsecureRepositories "true";' > /etc/apt/apt.conf.d/99no-check-valid-until
+    cat >> /etc/apt/apt.conf.d/99no-check-valid-until <<'EOF'
+    Acquire::Check-Valid-Until "false";
+    Acquire::AllowInsecureRepositories "true";
+EOF
 	if [ "x${VERSION_ID:-0}" = "x9" ]; then
 		sed -i 's|^deb .*stretch-updates|# &|g' /etc/apt/sources.list
 		sed -i 's|^deb .*stretch/updates|# &|g' /etc/apt/sources.list
-		export DEBIAN_FRONTEND=noninteractive
-        export APT_LISTCHANGES_FRONTEND=none
 		echo "Disabled stretch-updates and stretch-security in sources.list to prevent 404 errors"
 	fi
 fi
