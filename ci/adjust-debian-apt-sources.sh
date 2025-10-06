@@ -14,6 +14,8 @@ if [ "x${ID:-linux}" = "xdebian" ] && { [ "x${VERSION_ID:-0}" = "x9" ] || [ "x${
 	if [ "x${VERSION_ID:-0}" = "x9" ]; then
 		sed -i 's|^deb .*stretch-updates|# &|g' /etc/apt/sources.list
 		sed -i 's|^deb .*stretch/updates|# &|g' /etc/apt/sources.list
+		export DEBIAN_FRONTEND=noninteractive
+        export APT_LISTCHANGES_FRONTEND=none
 		echo "Disabled stretch-updates and stretch-security in sources.list to prevent 404 errors"
 	fi
 fi
