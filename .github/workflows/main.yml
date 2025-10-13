@@ -66,17 +66,9 @@ jobs:
       - name: Build and test in docker
         run: bash ci/test_dockerized.sh ${{ matrix.PHP_VERSION }} ${{ matrix.PHP_VERSION_FULL }} ${{ matrix.DOCKER_ARCHITECTURE }}
 
-      # We reuse the php base image because
-      # 1. It has any necessary dependencies installed for php 7.0-8.2
-      # 2. It is already downloaded
-      #
-      # We need to install valgrind then rebuild php from source with the configure option '--with-valgrind' to avoid valgrind false positives
-      # because php-src has inline assembly that causes false positives in valgrind when that option isn't used.
-      # The OS release in the PHP 7.0 image is too old to install valgrind without workarounds: https://stackoverflow.com/questions/76094428/debian-stretch-repositories-404-not-found
       - name: Build and test in docker again with valgrind
-        run: if [[ ${{ matrix.PHP_VERSION }} != '7.0' ]]; then bash ci/test_dockerized_valgrind.sh ${{ matrix.PHP_VERSION }} ${{ matrix.PHP_VERSION_FULL }} ${{ matrix.DOCKER_ARCHITECTURE }}; fi
-      # NOTE: tests report false positives for zend_string_equals in php 7.3+
-      # due to the use of inline assembly in php-src. (not related to igbinary)
+        run: bash ci/test_dockerized_valgrind.sh ${{ matrix.PHP_VERSION }} ${{ matrix.PHP_VERSION_FULL }} ${{ matrix.DOCKER_ARCHITECTURE }}
+
   windows:
     defaults:
       run:
